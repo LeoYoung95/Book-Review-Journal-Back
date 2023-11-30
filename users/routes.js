@@ -1,6 +1,6 @@
-import * as dao from "./dao.js";
+import * as dao from "./daos.js";
 
-function UserRoutes(app) {
+function UsersRoutes(app) {
     // User Authentication
     const signin = async (req, res) => {
         const response = await dao.signin(req.body);
@@ -120,4 +120,4 @@ function UserRoutes(app) {
     app.put('/api/users/:id/written_reviews', editWrittenReview);
 }
 
-export default UserRoutes;
+export default UsersRoutes;

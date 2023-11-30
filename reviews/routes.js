@@ -1,4 +1,4 @@
-import * as dao from './reviewsDao.js';
+import * as dao from './daos.js';
 
 function ReviewsRoutes(app) {
     // Get Trending Reviews
