@@ -22,7 +22,7 @@ const userSchema = new mongoose.Schema({
   bio: String,
   role: {
     type: String,
-    enum: ['Writer', 'Reader', 'ADMIN'], // Define roles as an enumeration
+    enum: ['Author', 'Reader', 'ADMIN'], // Define roles as an enumeration
     required: true
   },
   likedReviews: [{

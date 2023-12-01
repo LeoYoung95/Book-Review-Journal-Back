@@ -7,7 +7,7 @@ import UsersRoutes from "./users/routes";
 import ReviewsRoutes from "./reviews/routes";
 import BooksRoutes from "./books/routes";
 
-const CONNECTION_STRING = process.env.DB_CONNECTION_STRING || 'mongodb://localhost:27017';
+const CONNECTION_STRING = process.env.DB_CONNECTION_STRING;
 mongoose.connect(CONNECTION_STRING).then(r => console.log("Connected to MongoDB"));
 
 const app = express();
