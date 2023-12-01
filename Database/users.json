@@ -1,0 +1,55 @@
+[{
+  "_id": {
+    "$oid": "656946525bb08f4a94c88563"
+  },
+  "firstName": "Alex",
+  "lastName": "Smith",
+  "email": "alexsmith@example.com",
+  "password": "111",
+  "bio": "Admin of Book Review Journey.",
+  "role": "ADMIN",
+  "likedReviews": [
+
+  ],
+  "likedBooks": [
+
+  ],
+  "profilePic": "admin_profile_pic_url"
+},
+{
+  "_id": {
+    "$oid": "656946525bb08f4a94c88564"
+  },
+  "firstName": "Jamie",
+  "lastName": "Doe",
+  "email": "jamiedoe@example.com",
+  "password": "222",
+  "bio": "Author and enthusiast of science fiction.",
+  "role": "Writer",
+  "reviews": [
+    "6569459a5bb08f4a94c88556"
+  ],
+  "likedBooks": [
+    "656945b05bb08f4a94c8855e"
+  ],
+  "profilePic": "writer_profile_pic_url"
+},
+{
+  "_id": {
+    "$oid": "656946525bb08f4a94c88565"
+  },
+  "firstName": "Chris",
+  "lastName": "Taylor",
+  "email": "christaylor@example.com",
+  "password": "333",
+  "bio": "Lover of literature and fantasy novels.",
+  "role": "Reader",
+  "likedReviews": [
+    "6569459a5bb08f4a94c88557"
+  ],
+  "likedBooks": [
+    "656945b05bb08f4a94c8855d",
+    "656945b05bb08f4a94c8855f"
+  ],
+  "profilePic": "reader_profile_pic_url"
+}]
