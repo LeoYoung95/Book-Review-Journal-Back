@@ -1,4 +1,4 @@
-import ReviewModel from './model.js'; // Assuming your review model is in 'model.js'
+import ReviewModel from './model.js';
 
 const findTrendingReviews = async () => {
     // Fetch trending reviews, logic depends on how you define 'trending'
@@ -13,16 +13,16 @@ const findReviewById = async (reviewId) => {
 };
 
 const findReviewLikedUsersById = async (reviewId) => {
-    // Fetch users who liked a specific review, assuming there's an array of user references/IDs in the review document
-    const review = await ReviewModel.findById(reviewId).populate('likedUsers'); // Adjust field name as per your schema
+    // Fetch users who liked a specific review
+    const review = await ReviewModel.findById(reviewId).populate('likedUsers');
     return review ? review.likedUsers : [];
 };
 
-const addReviewLikedUsersById = async (reviewId, user) => {
+const addReviewLikedUsersById = async (reviewId, userId) => {
     // Add a user to the review's liked users
     const review = await ReviewModel.findById(reviewId);
     if (review) {
-        review.likedUsers.push(user); // Adjust field name as per your schema
+        review.likedUsers.push(userId);
         await review.save();
     }
     return review;
@@ -32,15 +32,15 @@ const deleteReviewLikedUsersById = async (reviewId, userId) => {
     // Remove a user from the review's liked users
     const review = await ReviewModel.findById(reviewId);
     if (review) {
-        review.likedUsers = review.likedUsers.filter(id => id.toString() !== userId); // Adjust as needed
+        review.likedUsers = review.likedUsers.filter(id => id.toString() !== userId);
         await review.save();
     }
     return review;
 };
 
-const createReview = async (userId, reviewData) => {
+const createReview = async (reviewData) => {
     // Create a new review
-    const newReview = new ReviewModel({ ...reviewData, author: userId }); // Assuming 'author' field stores user ID
+    const newReview = new ReviewModel(reviewData);
     await newReview.save();
     return newReview;
 };
@@ -51,10 +51,16 @@ const updateReview = async (reviewId, reviewUpdates) => {
     return updatedReview;
 };
 
-const deleteReview = async (reviewId) => {
-    // Soft delete a review, assuming there's a 'deleted' or similar field
-    const deletedReview = await ReviewModel.findByIdAndUpdate(reviewId, { deleted: true }, { new: true });
+const deleteReview = async (reviewId, deletedBy) => {
+    // Soft delete a review
+    const deletedReview = await ReviewModel.findByIdAndUpdate(reviewId, { is_deleted: true, deleted_by: deletedBy }, { new: true });
     return deletedReview;
+};
+
+const recoverReview = async (reviewId) => {
+    // Recover a soft-deleted review
+    const recoveredReview = await ReviewModel.findByIdAndUpdate(reviewId, { is_deleted: false, deleted_by: null }, { new: true });
+    return recoveredReview;
 };
 
 export {
@@ -65,5 +71,6 @@ export {
     deleteReviewLikedUsersById,
     createReview,
     updateReview,
-    deleteReview
+    deleteReview,
+    recoverReview
 };
