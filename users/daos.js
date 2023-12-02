@@ -1,43 +1,67 @@
 import UserModel from './model.js';
+import bcrypt from 'bcryptjs';
 
-const signin = async (credentials) => {
-    // Implement user signin logic (e.g., find user by credentials)
-    const user = await UserModel.findOne({ username: credentials.username, password: credentials.password });
+const signIn = async (credentials) => {
+    const user = await UserModel.findOne({ email: credentials.email });
+    if (!user) {
+        throw new Error('User not found');
+    }
+
+    const isMatch = await bcrypt.compare(credentials.password, user.password);
+    if (!isMatch) {
+        throw new Error('Invalid credentials');
+    }
+
     return user;
 };
 
-const signup = async (credentials) => {
-    // Implement user signup logic (e.g., create a new user)
+const signUp = async (credentials) => {
+    const existingUser = await UserModel.findOne({ email: credentials.email });
+    if (existingUser) {
+        throw new Error('Email already in use');
+    }
+
     const newUser = new UserModel(credentials);
     await newUser.save();
     return newUser;
 };
 
-const signout = async () => {
-    // Implement signout logic if needed (usually handled on the client/session side)
+const signOut = async () => {
+    // SignOut logic (Note: Usually handled on the client/session side)
     return { message: 'Signout successful' };
 };
 
-const findCurrentUser = async () => {
-    // This would require a session or token to identify the current user
-    // Placeholder logic (modify as per your session management strategy)
-    const currentUser = await UserModel.findOne({ /* query to identify current user */ });
+const findCurrentUser = async (sessionToken) => {
+    // Replace with your session management logic
+    const currentUser = await UserModel.findOne({ sessionToken });
+    if (!currentUser) {
+        throw new Error('Current user not found');
+    }
+
     return currentUser;
 };
 
 const findUserById = async (userId) => {
-    // Implement logic to find a user by ID
     const user = await UserModel.findById(userId);
+    if (!user) {
+        throw new Error('User not found');
+    }
+
     return user;
 };
 
 const updateProfile = async (userId, userUpdates) => {
-    // Implement logic to update user profile
+    if (userUpdates.password) {
+        throw new Error('Cannot update password directly');
+    }
+
     const updatedUser = await UserModel.findByIdAndUpdate(userId, userUpdates, { new: true });
+    if (!updatedUser) {
+        throw new Error('User not found');
+    }
+
     return updatedUser;
 };
-
-// Implement additional methods for other operations
 
 const findWrittenReviewsByUserId = async (userId) => {
     // Assuming reviews are stored within the user document
@@ -120,14 +144,14 @@ const editWrittenReview = async (userId, reviewId, reviewUpdates) => {
         await user.save();
         return user.writtenReviews[index];
     } else {
-        return null; // Or handle as you see fit
+        return null;
     }
 };
 
 export {
-    signin,
-    signup,
-    signout,
+    signIn,
+    signUp,
+    signOut,
     findCurrentUser,
     findUserById,
     updateProfile,

@@ -8,22 +8,19 @@ const findBookByMongoId = async (mongoId) => {
 
 const findBookByOpenLibraryId = async (olid) => {
     // Fetch a book by its Open Library ID
-    // Assuming 'openLibraryId' is a field in your book schema
-    const book = await BookModel.findOne({ openLibraryId: olid });
+    const book = await BookModel.findOne({ olid: olid }); // Updated to match the schema field name
     return book;
 };
 
 const findBookReviewsByOpenLibraryId = async (olid) => {
     // Fetch reviews for a book by its Open Library ID
-    // This assumes that reviews are either embedded in the book document or referenced
-    const book = await BookModel.findOne({ openLibraryId: olid }).populate('reviews'); // Adjust field name as per your schema
+    const book = await BookModel.findOne({ olid: olid }).populate('reviews'); // Updated to match the schema field name
     return book ? book.reviews : [];
 };
 
 const findBookLikedUsersByOpenLibraryId = async (olid) => {
     // Fetch users who liked a book by its Open Library ID
-    // Assuming there's an array of user references/IDs in the book document
-    const book = await BookModel.findOne({ openLibraryId: olid }).populate('likedUsers'); // Adjust field name as per your schema
+    const book = await BookModel.findOne({ olid: olid }).populate('likedUsers'); // Updated to match the schema field name
     return book ? book.likedUsers : [];
 };
 
