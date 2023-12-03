@@ -12,6 +12,18 @@ const findReviewById = async (reviewId) => {
     return review;
 };
 
+const findReviewsByOlid = async (olid) => {
+    // Fetch reviews by its OLID
+    const reviews = await ReviewModel.find({ book_olid: olid });
+    return reviews;
+}
+
+const findReviewsByAuthorId = async (authorId) => {
+    // Fetch reviews by a specific author
+    const reviews = await ReviewModel.find({ author_id: authorId });
+    return reviews;
+}
+
 const findReviewLikedUsersById = async (reviewId) => {
     // Fetch users who liked a specific review
     const review = await ReviewModel.findById(reviewId).populate('likedUsers');
