@@ -8,17 +8,17 @@ function UsersRoutes(app) {
 
     // User Authentication
     app.post('/api/users/signin', wrapAsync(async (req, res) => {
-        const user = await dao.signin(req.body);
+        const user = await dao.signIn(req.body);
         res.status(200).json(user);
     }));
 
     app.post('/api/users/signup', wrapAsync(async (req, res) => {
-        const newUser = await dao.signup(req.body);
+        const newUser = await dao.signUp(req.body);
         res.status(201).json(newUser);
     }));
 
     app.post('/api/users/signout', wrapAsync(async (req, res) => {
-        const response = await dao.signout();
+        const response = await dao.signOut();
         res.status(200).json(response);
     }));
 
