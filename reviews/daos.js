@@ -1,8 +1,14 @@
 import ReviewModel from './model.js';
 
+const findAllReviews = async () => {
+    // Fetch all reviews
+    const reviews = await ReviewModel.find();
+    return reviews;
+}
+
 const findTrendingReviews = async () => {
     // Fetch trending reviews, logic depends on how you define 'trending'
-    const trendingReviews = await ReviewModel.find({ /* criteria for trending */ }).limit(10); // Example
+    const trendingReviews = await ReviewModel.find({ /* criteria for trending */}).limit(10); // Example
     return trendingReviews;
 };
 
@@ -14,13 +20,13 @@ const findReviewById = async (reviewId) => {
 
 const findReviewsByOlid = async (olid) => {
     // Fetch reviews by its OLID
-    const reviews = await ReviewModel.find({ book_olid: olid });
+    const reviews = await ReviewModel.find({book_olid: olid});
     return reviews;
 }
 
 const findReviewsByAuthorId = async (authorId) => {
     // Fetch reviews by a specific author
-    const reviews = await ReviewModel.find({ author_id: authorId });
+    const reviews = await ReviewModel.find({author_id: authorId});
     return reviews;
 }
 
@@ -59,19 +65,23 @@ const createReview = async (reviewData) => {
 
 const updateReview = async (reviewId, reviewUpdates) => {
     // Update a review
-    const updatedReview = await ReviewModel.findByIdAndUpdate(reviewId, reviewUpdates, { new: true });
+    const updatedReview = await ReviewModel.findByIdAndUpdate(reviewId, reviewUpdates, {new: true});
     return updatedReview;
 };
 
 const deleteReview = async (reviewId, deletedBy) => {
     // Soft delete a review
-    const deletedReview = await ReviewModel.findByIdAndUpdate(reviewId, { is_deleted: true, deleted_by: deletedBy }, { new: true });
+    const deletedReview = await ReviewModel.findByIdAndUpdate(reviewId, {
+        is_deleted: true, deleted_by: deletedBy
+    }, {new: true});
     return deletedReview;
 };
 
 const recoverReview = async (reviewId) => {
     // Recover a soft-deleted review
-    const recoveredReview = await ReviewModel.findByIdAndUpdate(reviewId, { is_deleted: false, deleted_by: null }, { new: true });
+    const recoveredReview = await ReviewModel.findByIdAndUpdate(reviewId, {
+        is_deleted: false, deleted_by: null
+    }, {new: true});
     return recoveredReview;
 };
 
@@ -84,5 +94,6 @@ export {
     createReview,
     updateReview,
     deleteReview,
-    recoverReview
+    recoverReview,
+    findAllReviews,
 };

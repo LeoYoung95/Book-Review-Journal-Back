@@ -1,6 +1,13 @@
 import * as dao from './daos.js';
 
 function ReviewsRoutes(app) {
+
+    // Get All Reviews
+    app.get('/api/reviews', async (req, res) => {
+        const reviews = await dao.findAllReviews();
+        res.json(reviews);
+    });
+
     // Get Trending Reviews
     app.get('/api/reviews/trending', async (req, res) => {
         const reviews = await dao.findTrendingReviews();
@@ -40,6 +47,7 @@ function ReviewsRoutes(app) {
     // Author Only: Update Review
     app.put('/api/reviews/:id', async (req, res) => {
         const response = await dao.updateReview(req.params.id, req.body);
+        console.log(response);
         res.json(response);
     });
 
