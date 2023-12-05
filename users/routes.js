@@ -13,10 +13,14 @@ function UsersRoutes(app) {
         res.status(200).json(user);
     }));
 
-    app.post('/api/users/signup', wrapAsync(async (req, res) => {
-        const newUser = await dao.signUp(req.body);
-        req.session.user = newUser; // Store new user in session
-        res.status(201).json(newUser);
+    app.post('/api/users/signup', wrapAsync(async (req, res, next) => {
+        try {
+            const newUser = await dao.signUp(req.body);
+            req.session.user = newUser; // Store new user in session
+            res.status(201).json(newUser);
+        } catch (error) {
+            next(error);
+        }
     }));
 
     app.post('/api/users/signout', wrapAsync(async (req, res) => {
@@ -122,7 +126,9 @@ function UsersRoutes(app) {
     // Error handling middleware
     app.use((err, req, res, next) => {
         console.error(err.stack);
-        res.status(err.status || 500).json({ error: err.message });
+        // If the error is an instance of Error, send its message. Otherwise, send a generic message
+        const message = err instanceof Error ? err.message : 'Internal Server Error';
+        res.status(err.status || 500).json({ error: message });
     });
 }
 

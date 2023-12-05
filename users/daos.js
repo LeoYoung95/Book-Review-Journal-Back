@@ -8,6 +8,8 @@ const signIn = async (credentials) => {
     }
 
     const isMatch = await bcrypt.compare(credentials.password, user.password);
+    console.log("credentials.password: " + credentials.password);
+    console.log("user.password: " + user.password);
     if (!isMatch) {
         throw new Error('Invalid credentials');
     }
@@ -20,6 +22,10 @@ const signUp = async (credentials) => {
     if (existingUser) {
         throw new Error('Email already in use');
     }
+
+    // Hash the password before saving the user
+    const hashedPassword = await bcrypt.hash(credentials.password, 10); // 10 is the number of salt rounds
+    credentials.password = hashedPassword;
 
     const newUser = new UserModel(credentials);
     await newUser.save();
