@@ -9,22 +9,32 @@ function UsersRoutes(app) {
     // User Authentication
     app.post('/api/users/signin', wrapAsync(async (req, res) => {
         const user = await dao.signIn(req.body);
+        req.session.user = user; // Store user in session
         res.status(200).json(user);
     }));
 
     app.post('/api/users/signup', wrapAsync(async (req, res) => {
         const newUser = await dao.signUp(req.body);
+        req.session.user = newUser; // Store new user in session
         res.status(201).json(newUser);
     }));
 
     app.post('/api/users/signout', wrapAsync(async (req, res) => {
-        const response = await dao.signOut();
-        res.status(200).json(response);
+        req.session.destroy((err) => { // Destroy the session
+            if (err) {
+                res.status(500).json({ error: 'Error signing out' });
+            } else {
+                res.status(200).json({ message: 'Signed out successfully' });
+            }
+        });
     }));
 
-    // Get User Info
+    // Get Current User Info
     app.get('/api/users/current', wrapAsync(async (req, res) => {
-        const user = await dao.findCurrentUser(req.sessionToken); // Adjust to use actual session token
+        if (!req.session.user) {
+            return res.status(401).json({ error: 'Not authenticated' });
+        }
+        const user = await dao.findUserById(req.session.user.id);
         res.status(200).json(user);
     }));
 
