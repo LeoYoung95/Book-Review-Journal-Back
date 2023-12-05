@@ -36,7 +36,7 @@ const userSchema = new mongoose.Schema({
         profilePicId: [{
             type: String,
             required: false,
-            enum: ['1', '2', '3', '4', '5', '6', '7', '8', '9', '10']
+            enum: ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9']
         }],
     },
 
