@@ -8,7 +8,7 @@ const signIn = async (credentials) => {
     }
 
     const isMatch = await bcrypt.compare(credentials.password, user.password);
-    console.log("credentials.password: " + credentials.password);
+    console.log("credentials.password (Unhashed): " + credentials.password);
     console.log("user.password: " + user.password);
     if (!isMatch) {
         throw new Error('Invalid credentials');

@@ -42,12 +42,5 @@ const userSchema = new mongoose.Schema({
 
     {timestamps: true});
 
-// Middleware to hash password before saving if it's been modified
-userSchema.pre('save', async function (next) {
-    if (!this.isModified('password')) return next();
-    this.password = await bcrypt.hash(this.password, 12);
-    next();
-});
-
 
 export default userSchema;
