@@ -24,6 +24,12 @@ function BooksRoutes(app) {
         const users = await dao.findBookLikedUsersByOpenLibraryId(req.params.olid);
         res.json(users);
     });
+
+    // Route to post a new review for a book by its Open Library ID
+    app.post('/api/books/olid/:olid/reviews', async (req, res) => {
+        const response = await dao.createReviewByOpenLibraryId(req.params.olid, req.body.reviewID);
+        res.json(response);
+    });
 }
 
 export default BooksRoutes;

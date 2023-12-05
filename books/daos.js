@@ -24,9 +24,21 @@ const findBookLikedUsersByOpenLibraryId = async (olid) => {
     return book ? book.likedUsers : [];
 };
 
+const createReviewByOpenLibraryId = async (olid, reviewId) => {
+    // Add a review to a book by its Open Library ID
+    const book = await BookModel.findOne({ olid: olid }); // Updated to match the schema field name
+    if (book) {
+        book.reviews.push(reviewId);
+        await book.save();
+    }
+    return book;
+}
 export {
     findBookByMongoId,
     findBookByOpenLibraryId,
     findBookReviewsByOpenLibraryId,
-    findBookLikedUsersByOpenLibraryId
+    findBookLikedUsersByOpenLibraryId,
+    createReviewByOpenLibraryId
 };
+
+
