@@ -60,12 +60,12 @@ const updateProfile = async (userId, userUpdates) => {
     if (userUpdates.password) {
         throw new Error('Cannot update password directly');
     }
-
+    
     const updatedUser = await UserModel.findByIdAndUpdate(userId, userUpdates, { new: true });
     if (!updatedUser) {
         throw new Error('User not found');
     }
-
+    
     return updatedUser;
 };
 
