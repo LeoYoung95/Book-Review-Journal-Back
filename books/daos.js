@@ -26,10 +26,14 @@ const findBookLikedUsersByOpenLibraryId = async (olid) => {
 
 const createReviewByOpenLibraryId = async (olid, reviewId) => {
     // Add a review to a book by its Open Library ID
+    console.log('olid, reviewId', olid, reviewId);
     const book = await BookModel.findOne({ olid: olid }); // Updated to match the schema field name
+    console.log('book:, ', book);
     if (book) {
+        console.log('in book conditional')
         book.reviews.push(reviewId);
         await book.save();
+        console.log('after book save: ', book);
     }
     return book;
 }

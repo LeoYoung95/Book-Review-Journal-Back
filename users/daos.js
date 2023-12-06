@@ -43,7 +43,7 @@ const findCurrentUser = async (sessionToken) => {
     if (!currentUser) {
         throw new Error('Current user not found');
     }
-
+    
     return currentUser;
 };
 

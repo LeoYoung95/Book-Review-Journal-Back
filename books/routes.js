@@ -27,6 +27,8 @@ function BooksRoutes(app) {
 
     // Route to post a new review for a book by its Open Library ID
     app.post('/api/books/olid/:olid/reviews', async (req, res) => {
+        console.log('req params', req.params);
+        console.log('req.body', req.body);
         const response = await dao.createReviewByOpenLibraryId(req.params.olid, req.body.reviewID);
         res.json(response);
     });
