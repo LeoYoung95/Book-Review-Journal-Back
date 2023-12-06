@@ -24,6 +24,12 @@ function BooksRoutes(app) {
         const response = await dao.createReviewByOpenLibraryId(req.params.olid, req.body.reviewID);
         res.json(response);
     });
+
+    // Route to add a new book by its Open Library ID, if the book does not exist, it will be created
+    app.post('/api/books/olid/:olid', async (req, res) => {
+        const response = await dao.addNewBookByOpenLibraryId(req.params.olid);
+        res.json(response);
+    });
 }
 
 export default BooksRoutes;
