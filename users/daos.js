@@ -109,28 +109,13 @@ const removeLikedReview = async (userId, reviewId) => {
     return { message: 'Review removed successfully' };
 };
 
-const addLikedBook = async (userId, book) => {
-    // Add a book to the user's liked books
-    const user = await UserModel.findById(userId);
-    user.likedBooks.push(book); // Adjust based on actual schema structure
-    await user.save();
-    return book;
-};
 
-const removeLikedBook = async (userId, bookId) => {
-    // Remove a book from the user's liked books
-    const user = await UserModel.findById(userId);
-    user.likedBooks = user.likedBooks.filter(b => b._id !== bookId); // Adjust based on actual schema structure
-    await user.save();
-    return { message: 'Book removed successfully' };
-};
-
-const addWrittenReview = async (userId, review) => {
+const addWrittenReview = async (userId, reviewId) => {
     // Add a written review to the user's profile
     const user = await UserModel.findById(userId);
-    user.writtenReviews.push(review); // Adjust based on actual schema structure
+    user.writtenReviews.push(reviewId); // Adjust based on actual schema structure
     await user.save();
-    return review;
+    return { message: ' New Written review posted successfully' };
 };
 
 const removeWrittenReview = async (userId, reviewId) => {
@@ -141,18 +126,7 @@ const removeWrittenReview = async (userId, reviewId) => {
     return { message: 'Review removed successfully' };
 };
 
-const editWrittenReview = async (userId, reviewId, reviewUpdates) => {
-    // Edit a written review in the user's profile
-    const user = await UserModel.findById(userId);
-    const index = user.writtenReviews.findIndex(r => r._id === reviewId);
-    if (index !== -1) {
-        user.writtenReviews[index] = { ...user.writtenReviews[index], ...reviewUpdates };
-        await user.save();
-        return user.writtenReviews[index];
-    } else {
-        return null;
-    }
-};
+
 
 export {
     signIn,
@@ -167,9 +141,6 @@ export {
     findDeletedReviewsByUserId,
     addLikedReview,
     removeLikedReview,
-    addLikedBook,
-    removeLikedBook,
     addWrittenReview,
     removeWrittenReview,
-    editWrittenReview,
 };

@@ -53,33 +53,10 @@ function UsersRoutes(app) {
         res.status(200).json(updatedUser);
     }));
 
-    // Author Only: Get Written Reviews
-    app.get('/api/users/:id/written_reviews', wrapAsync(async (req, res) => {
-        const reviews = await dao.findWrittenReviewsByUserId(req.params.id);
-        res.status(200).json(reviews);
-    }));
-
-    // Reader Only: Get Liked Reviews
-    app.get('/api/users/:id/liked_reviews', wrapAsync(async (req, res) => {
-        const reviews = await dao.findLikedReviewsByUserId(req.params.id);
-        res.status(200).json(reviews);
-    }));
-
-    // Reader Only: Get Liked Books
-    app.get('/api/users/:id/liked_books', wrapAsync(async (req, res) => {
-        const books = await dao.findLikedBooksByUserId(req.params.id);
-        res.status(200).json(books);
-    }));
-
-    // Admin Only: Get Deleted Reviews
-    app.get('/api/users/:id/deleted_reviews', wrapAsync(async (req, res) => {
-        const reviews = await dao.findDeletedReviewsByUserId(req.params.id);
-        res.status(200).json(reviews);
-    }));
 
     // Reader Only: Add Liked Review
     app.post('/api/users/:id/liked_reviews', wrapAsync(async (req, res) => {
-        const review = await dao.addLikedReview(req.params.id, req.body);
+        const review = await dao.addLikedReview(req.params.id, req.body.reviewId);
         res.status(201).json(review);
     }));
 
@@ -89,21 +66,10 @@ function UsersRoutes(app) {
         res.status(200).json(response);
     }));
 
-    // Reader Only: Add Liked Book
-    app.post('/api/users/:id/liked_books', wrapAsync(async (req, res) => {
-        const book = await dao.addLikedBook(req.params.id, req.body);
-        res.status(201).json(book);
-    }));
-
-    // Reader Only: Remove Liked Book
-    app.delete('/api/users/:id/liked_books', wrapAsync(async (req, res) => {
-        const response = await dao.removeLikedBook(req.params.id, req.body.bookId);
-        res.status(200).json(response);
-    }));
 
     // Author Only: Add Written Review
     app.post('/api/users/:id/written_reviews', wrapAsync(async (req, res) => {
-        const review = await dao.addWrittenReview(req.params.id, req.body);
+        const review = await dao.addWrittenReview(req.params.id, req.body.reviewId);
         res.status(201).json(review);
     }));
 
@@ -113,15 +79,6 @@ function UsersRoutes(app) {
         res.status(200).json(response);
     }));
 
-    // Author Only: Edit Written Review
-    app.put('/api/users/:id/written_reviews', wrapAsync(async (req, res) => {
-        const review = await dao.editWrittenReview(req.params.id, req.body.reviewId, req.body);
-        if (review) {
-            res.status(200).json(review);
-        } else {
-            res.status(404).json({ error: 'Review not found' });
-        }
-    }));
 
     // Error handling middleware
     app.use((err, req, res, next) => {
