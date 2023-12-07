@@ -6,10 +6,7 @@ const signIn = async (credentials) => {
     if (!user) {
         throw new Error('User not found');
     }
-
     const isMatch = await bcrypt.compare(credentials.password, user.password);
-    console.log("credentials.password (Unhashed): " + credentials.password);
-    console.log("user.password: " + user.password);
     if (!isMatch) {
         throw new Error('Invalid credentials');
     }
@@ -32,20 +29,6 @@ const signUp = async (credentials) => {
     return newUser;
 };
 
-const signOut = async () => {
-    // SignOut logic (Note: Usually handled on the client/session side)
-    return { message: 'Signout successful' };
-};
-
-const findCurrentUser = async (sessionToken) => {
-    // Replace with your session management logic
-    const currentUser = await UserModel.findOne({ sessionToken });
-    if (!currentUser) {
-        throw new Error('Current user not found');
-    }
-
-    return currentUser;
-};
 
 const findUserById = async (userId) => {
     const user = await UserModel.findById(userId);
@@ -69,29 +52,6 @@ const updateProfile = async (userId, userUpdates) => {
     return updatedUser;
 };
 
-const findWrittenReviewsByUserId = async (userId) => {
-    // Assuming reviews are stored within the user document
-    const user = await UserModel.findById(userId);
-    return user.writtenReviews;
-};
-
-const findLikedReviewsByUserId = async (userId) => {
-    // Fetch liked reviews of the user
-    const user = await UserModel.findById(userId);
-    return user.likedReviews;
-};
-
-const findLikedBooksByUserId = async (userId) => {
-    // Fetch liked books of the user
-    const user = await UserModel.findById(userId);
-    return user.likedBooks;
-};
-
-const findDeletedReviewsByUserId = async (userId) => {
-    // Fetch deleted reviews of the user, assuming there's a field for it
-    const user = await UserModel.findById(userId);
-    return user.deletedReviews; // Modify based on actual field name
-};
 
 const addLikedReview = async (userId, review) => {
     // Add a review to the user's liked reviews
@@ -104,7 +64,7 @@ const addLikedReview = async (userId, review) => {
 const removeLikedReview = async (userId, reviewId) => {
     // Remove a review from the user's liked reviews
     const user = await UserModel.findById(userId);
-    user.likedReviews = user.likedReviews.filter(r => r._id !== reviewId); // Adjust based on actual schema structure
+    user.likedReviews = user.likedReviews.filter(r => r.toString() !== reviewId); // Adjust based on actual schema structure
     await user.save();
     return { message: 'Review removed successfully' };
 };
@@ -118,27 +78,26 @@ const addWrittenReview = async (userId, reviewId) => {
     return { message: ' New Written review posted successfully' };
 };
 
+
 const removeWrittenReview = async (userId, reviewId) => {
-    // Remove a written review from the user's profile
+
     const user = await UserModel.findById(userId);
-    user.writtenReviews = user.writtenReviews.filter(r => r._id !== reviewId); // Adjust based on actual schema structure
+
+    // Convert each ObjectId in writtenReviews to a string for comparison
+    user.writtenReviews = user.writtenReviews.filter(r => r.toString() !== reviewId);
     await user.save();
+
     return { message: 'Review removed successfully' };
 };
+
 
 
 
 export {
     signIn,
     signUp,
-    signOut,
-    findCurrentUser,
     findUserById,
     updateProfile,
-    findWrittenReviewsByUserId,
-    findLikedReviewsByUserId,
-    findLikedBooksByUserId,
-    findDeletedReviewsByUserId,
     addLikedReview,
     removeLikedReview,
     addWrittenReview,

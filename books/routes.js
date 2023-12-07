@@ -13,10 +13,10 @@ function BooksRoutes(app) {
         res.json(book);
     });
 
-    // Route to get the reviews of a book by its Open Library ID
-    app.get('/api/books/olid/:olid/reviews', async (req, res) => {
-        const reviews = await dao.findBookReviewsByOpenLibraryId(req.params.olid);
-        res.json(reviews);
+    // Route to add a new book by its Open Library ID, if the book does not exist, it will be created
+    app.post('/api/books/olid/:olid', async (req, res) => {
+        const response = await dao.addNewBookByOpenLibraryId(req.params.olid);
+        res.json(response);
     });
 
     // Route to post a new review for a book by its Open Library ID, if the book does not exist, it will be created
@@ -25,9 +25,9 @@ function BooksRoutes(app) {
         res.json(response);
     });
 
-    // Route to add a new book by its Open Library ID, if the book does not exist, it will be created
-    app.post('/api/books/olid/:olid', async (req, res) => {
-        const response = await dao.addNewBookByOpenLibraryId(req.params.olid);
+    // Route to delete a book by its Open Library ID [Hard Delete]
+    app.delete('/api/books/olid/:olid/reviews', async (req, res) => {
+        const response = await dao.deleteBookByOpenLibraryId(req.params.olid, req.body.reviewID);
         res.json(response);
     });
 }

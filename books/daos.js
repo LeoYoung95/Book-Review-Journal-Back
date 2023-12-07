@@ -12,11 +12,17 @@ const findBookByOpenLibraryId = async (olid) => {
     return book;
 };
 
-const findBookReviewsByOpenLibraryId = async (olid) => {
-    // Fetch reviews for a book by its Open Library ID
-    const book = await BookModel.findOne({olid: olid}).populate('reviews'); // Updated to match the schema field name
-    return book ? book.reviews : [];
-};
+const addNewBookByOpenLibraryId = async (olid) => {
+    // Add a new book by its Open Library ID, if the book does not exist, it will be created
+    const book = await BookModel.findOne({olid: olid});
+    if (book) {
+        return book;
+    } else {
+        const newBook = new BookModel({olid: olid}); // Updated to match the schema field name
+        await newBook.save();
+        return newBook;
+    }
+}
 
 
 const createReviewByOpenLibraryId = async (olid, reviewId) => {
@@ -32,24 +38,23 @@ const createReviewByOpenLibraryId = async (olid, reviewId) => {
     return book;
 }
 
-const addNewBookByOpenLibraryId = async (olid) => {
-    // Add a new book by its Open Library ID, if the book does not exist, it will be created
-    const book = await BookModel.findOne({olid: olid});
+const deleteBookByOpenLibraryId = async (olid, reviewId) => {
+    // Delete a book by its Open Library ID [Hard Delete]
+    const book = await BookModel.findOne({olid: olid}); // Updated to match the schema field name
     if (book) {
-        return book;
-    } else {
-        const newBook = new BookModel({olid: olid}); // Updated to match the schema field name
-        await newBook.save();
-        return newBook;
+        book.reviews = book.reviews.filter((review) => review.toString() !== reviewId);
+        await book.save();
     }
+    return book;
 }
+
 
 export {
     findBookByMongoId,
     findBookByOpenLibraryId,
-    findBookReviewsByOpenLibraryId,
     createReviewByOpenLibraryId,
-    addNewBookByOpenLibraryId
+    addNewBookByOpenLibraryId,
+    deleteBookByOpenLibraryId
 };
 
 

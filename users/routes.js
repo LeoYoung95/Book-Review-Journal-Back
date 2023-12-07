@@ -73,7 +73,7 @@ function UsersRoutes(app) {
         res.status(201).json(review);
     }));
 
-    // Author & Admin Only: Remove Written Review
+    // Admin Only: Remove Written Review [Hard Delete]
     app.delete('/api/users/:id/written_reviews', wrapAsync(async (req, res) => {
         const response = await dao.removeWrittenReview(req.params.id, req.body.reviewId);
         res.status(200).json(response);

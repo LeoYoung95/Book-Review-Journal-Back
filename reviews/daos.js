@@ -6,29 +6,12 @@ const findAllReviews = async () => {
     return reviews;
 }
 
-const findTrendingReviews = async () => {
-    // Fetch trending reviews, logic depends on how you define 'trending'
-    const trendingReviews = await ReviewModel.find({ /* criteria for trending */}).limit(10); // Example
-    return trendingReviews;
-};
-
 const findReviewById = async (reviewId) => {
     // Fetch a review by its ID
     const review = await ReviewModel.findById(reviewId);
     return review;
 };
 
-const findReviewsByOlid = async (olid) => {
-    // Fetch reviews by its OLID
-    const reviews = await ReviewModel.find({book_olid: olid});
-    return reviews;
-}
-
-const findReviewsByAuthorId = async (authorId) => {
-    // Fetch reviews by a specific author
-    const reviews = await ReviewModel.find({author_id: authorId});
-    return reviews;
-}
 
 const findReviewLikedUsersById = async (reviewId) => {
     // Fetch users who liked a specific review
@@ -85,8 +68,13 @@ const recoverReview = async (reviewId) => {
     return recoveredReview;
 };
 
+const hardDeleteReview = async (reviewId) => {
+    // Hard delete a review
+    const deletedReview = await ReviewModel.findByIdAndDelete(reviewId);
+    return deletedReview;
+};
+
 export {
-    findTrendingReviews,
     findReviewById,
     findReviewLikedUsersById,
     addReviewLikedUsersById,
@@ -96,4 +84,5 @@ export {
     deleteReview,
     recoverReview,
     findAllReviews,
+    hardDeleteReview,
 };
