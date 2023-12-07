@@ -33,7 +33,7 @@ const deleteReviewLikedUsersById = async (reviewId, userId) => {
     // Remove a user from the review's liked users
     const review = await ReviewModel.findById(reviewId);
     if (review) {
-        review.likedUsers = review.likedUsers.filter(id => id.toString() !== userId);
+        review.likedUsers = review.likedUsers.filter(id => id !== null && id.toString() !== userId);
         await review.save();
     }
     return review;
