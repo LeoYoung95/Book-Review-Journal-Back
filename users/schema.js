@@ -38,6 +38,12 @@ const userSchema = new mongoose.Schema({
             ref: 'Review'
         }],
 
+        // Admin Only [Soft Delete Tracker]
+        deletedReviews: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review'
+        }],
+
         profilePicId: [{
             type: String,
             required: false,

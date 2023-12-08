@@ -66,6 +66,18 @@ function UsersRoutes(app) {
         res.status(200).json(response);
     }));
 
+    // Reader Only: Add Liked Book
+    app.post('/api/users/:id/liked_books', wrapAsync(async (req, res) => {
+        const book = await dao.addLikedBook(req.params.id, req.body.bookId);
+        res.status(201).json(book);
+    }));
+
+    // Reader Only: Remove Liked Book
+    app.delete('/api/users/:id/liked_books', wrapAsync(async (req, res) => {
+        const response = await dao.removeLikedBook(req.params.id, req.body.bookId);
+        res.status(200).json(response);
+    }));
+
 
     // Author Only: Add Written Review
     app.post('/api/users/:id/written_reviews', wrapAsync(async (req, res) => {

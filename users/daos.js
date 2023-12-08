@@ -52,23 +52,39 @@ const updateProfile = async (userId, userUpdates) => {
     return updatedUser;
 };
 
-
-const addLikedReview = async (userId, review) => {
+const addLikedReview = async (userId, reviewId) => {
     // Add a review to the user's liked reviews
     const user = await UserModel.findById(userId);
-    user.likedReviews.push(review); // Adjust based on actual schema structure
+    user.likedReviews.push(reviewId); // Adjust based on actual schema structure
     await user.save();
-    return review;
+    return { message: 'LikedReview Added Successfully' };
 };
 
 const removeLikedReview = async (userId, reviewId) => {
     // Remove a review from the user's liked reviews
     const user = await UserModel.findById(userId);
-    user.likedReviews = user.likedReviews.filter(r => r.toString() !== reviewId); // Adjust based on actual schema structure
+    user.likedReviews = user.likedReviews.filter(r => r.toString() !== reviewId);
     await user.save();
-    return { message: 'Review removed successfully' };
+    return { message: 'LikedReview Removed Successfully' };
 };
 
+const addLikedBook = async (userId, bookId) => {
+    // Add a book to the user's liked books
+    const user = await UserModel.findById(userId);
+    user.likedBooks.push(bookId);
+    await user.save();
+    return { message: 'LikedBook Added Successfully' };
+
+}
+
+const removeLikedBook = async (userId, bookId) => {
+    // Remove a book from the user's liked books
+    const user = await UserModel.findById(userId);
+    user.likedBooks = user.likedBooks.filter(b => b.toString() !== bookId);
+    await user.save();
+    return { message: 'LikedBook Removed Successfully' };
+
+}
 
 const addWrittenReview = async (userId, reviewId) => {
     // Add a written review to the user's profile
@@ -100,6 +116,8 @@ export {
     updateProfile,
     addLikedReview,
     removeLikedReview,
+    addLikedBook,
+    removeLikedBook,
     addWrittenReview,
     removeWrittenReview,
 };
