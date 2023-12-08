@@ -22,17 +22,22 @@ const userSchema = new mongoose.Schema({
         bio: String,
         role: {
             type: String,
-            enum: ['Author', 'Reader', 'Admin'], // Define roles as an enumeration
+            enum: ['Author', 'Reader', 'Admin'],
             required: true
         },
+
+        // Author Only
+        writtenReviews: [{
+            type: mongoose.Schema.Types.ObjectId,
+            ref: 'Review'
+        }],
+
+        // Reader Only
         likedReviews: [{
             type: mongoose.Schema.Types.ObjectId,
             ref: 'Review'
         }],
-        likedBooks: [{
-            type: mongoose.Schema.Types.ObjectId,
-            ref: 'Book'
-        }],
+
         profilePicId: [{
             type: String,
             required: false,
@@ -44,3 +49,7 @@ const userSchema = new mongoose.Schema({
 
 
 export default userSchema;
+
+
+
+

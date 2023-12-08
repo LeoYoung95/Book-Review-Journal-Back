@@ -13,23 +13,23 @@ function BooksRoutes(app) {
         res.json(book);
     });
 
-    // Route to get the reviews of a book by its Open Library ID
-    app.get('/api/books/olid/:olid/reviews', async (req, res) => {
-        const reviews = await dao.findBookReviewsByOpenLibraryId(req.params.olid);
-        res.json(reviews);
+    // Route to add a new book by its Open Library ID, if the book does not exist, it will be created
+    app.post('/api/books/olid/:olid', async (req, res) => {
+        const response = await dao.addNewBookByOpenLibraryId(req.params.olid);
+        res.json(response);
     });
 
-    // Route to get the users who liked a book by its Open Library ID
-    app.get('/api/books/olid/:olid/liked_users', async (req, res) => {
-        const users = await dao.findBookLikedUsersByOpenLibraryId(req.params.olid);
-        res.json(users);
-    });
-
-    // Route to post a new review for a book by its Open Library ID
+    // Route to post a new review for a book by its Open Library ID, if the book does not exist, it will be created
     app.post('/api/books/olid/:olid/reviews', async (req, res) => {
         console.log('req params', req.params);
         console.log('req.body', req.body);
         const response = await dao.createReviewByOpenLibraryId(req.params.olid, req.body.reviewID);
+        res.json(response);
+    });
+
+    // Route to delete a book by its Open Library ID [Hard Delete]
+    app.delete('/api/books/olid/:olid/reviews', async (req, res) => {
+        const response = await dao.deleteBookByOpenLibraryId(req.params.olid, req.body.reviewID);
         res.json(response);
     });
 }

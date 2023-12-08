@@ -8,41 +8,56 @@ const findBookByMongoId = async (mongoId) => {
 
 const findBookByOpenLibraryId = async (olid) => {
     // Fetch a book by its Open Library ID
-    const book = await BookModel.findOne({ olid: olid }); // Updated to match the schema field name
+    const book = await BookModel.findOne({olid: olid}); // Updated to match the schema field name
     return book;
 };
 
-const findBookReviewsByOpenLibraryId = async (olid) => {
-    // Fetch reviews for a book by its Open Library ID
-    const book = await BookModel.findOne({ olid: olid }).populate('reviews'); // Updated to match the schema field name
-    return book ? book.reviews : [];
-};
+const addNewBookByOpenLibraryId = async (olid) => {
+    // Add a new book by its Open Library ID, if the book does not exist, it will be created
+    const book = await BookModel.findOne({olid: olid});
+    if (book) {
+        return book;
+    } else {
+        const newBook = new BookModel({olid: olid}); // Updated to match the schema field name
+        await newBook.save();
+        return newBook;
+    }
+}
 
-const findBookLikedUsersByOpenLibraryId = async (olid) => {
-    // Fetch users who liked a book by its Open Library ID
-    const book = await BookModel.findOne({ olid: olid }).populate('likedUsers'); // Updated to match the schema field name
-    return book ? book.likedUsers : [];
-};
 
 const createReviewByOpenLibraryId = async (olid, reviewId) => {
-    // Add a review to a book by its Open Library ID
-    console.log('olid, reviewId', olid, reviewId);
-    const book = await BookModel.findOne({ olid: olid }); // Updated to match the schema field name
-    console.log('book:, ', book);
+    // Add a review to a book by its Open Library ID, if the book does not exist, it will be created
+    const book = await BookModel.findOne({olid: olid}); // Updated to match the schema field name
     if (book) {
-        console.log('in book conditional')
         book.reviews.push(reviewId);
         await book.save();
-        console.log('after book save: ', book);
+    } else {
+        const newBook = new BookModel({olid: olid, reviews: [reviewId]}); // Updated to match the schema field name
+        await newBook.save();
     }
     return book;
 }
+
+const deleteBookByOpenLibraryId = async (olid, reviewId) => {
+    // Delete a book by its Open Library ID [Hard Delete]
+    const book = await BookModel.findOne({olid: olid}); // Updated to match the schema field name
+    if (book) {
+        book.reviews = book.reviews.filter((review) => review.toString() !== reviewId);
+        await book.save();
+    }
+    return book;
+}
+
+
 export {
     findBookByMongoId,
     findBookByOpenLibraryId,
-    findBookReviewsByOpenLibraryId,
-    findBookLikedUsersByOpenLibraryId,
-    createReviewByOpenLibraryId
+    createReviewByOpenLibraryId,
+    addNewBookByOpenLibraryId,
+    deleteBookByOpenLibraryId
 };
+
+
+
 
 

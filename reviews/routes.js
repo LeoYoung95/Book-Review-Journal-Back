@@ -8,12 +8,6 @@ function ReviewsRoutes(app) {
         res.json(reviews);
     });
 
-    // Get Trending Reviews
-    app.get('/api/reviews/trending', async (req, res) => {
-        const reviews = await dao.findTrendingReviews();
-        res.json(reviews);
-    });
-
     // Get Review by Review ID
     app.get('/api/reviews/:id', async (req, res) => {
         const review = await dao.findReviewById(req.params.id);
@@ -60,6 +54,12 @@ function ReviewsRoutes(app) {
     // Admin Only: Recover Review
     app.put('/api/reviews/recover/:id', async (req, res) => {
         const response = await dao.recoverReview(req.params.id);
+        res.json(response);
+    });
+
+    // Admin Only: Hard Delete Review
+    app.delete('/api/reviews/:id', async (req, res) => {
+        const response = await dao.hardDeleteReview(req.params.id);
         res.json(response);
     });
 }
