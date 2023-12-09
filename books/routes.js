@@ -1,6 +1,12 @@
 import * as dao from './daos.js';
 
 function BooksRoutes(app) {
+    // Route to get all books
+    app.get('/api/books', async (req, res) => {
+        const books = await dao.findAllBooks();
+        res.json(books);
+    });
+
     // Route to get a book by its MongoDB ID
     app.get('/api/books/:mongo_id', async (req, res) => {
         const book = await dao.findBookByMongoId(req.params.mongo_id);

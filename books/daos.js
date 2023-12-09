@@ -1,5 +1,11 @@
 import BookModel from './model.js'; // Assuming your book model is in 'model.js'
 
+const findAllBooks = async () => {
+    // Fetch all books
+    const books = await BookModel.find();
+    return books;
+}
+
 const findBookByMongoId = async (mongoId) => {
     // Fetch a book by its MongoDB ID
     const book = await BookModel.findById(mongoId);
@@ -54,7 +60,8 @@ export {
     findBookByOpenLibraryId,
     createReviewByOpenLibraryId,
     addNewBookByOpenLibraryId,
-    deleteBookByOpenLibraryId
+    deleteBookByOpenLibraryId,
+    findAllBooks,
 };
 
 

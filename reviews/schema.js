@@ -35,7 +35,12 @@ const reviewSchema = new mongoose.Schema({
     type: mongoose.Schema.Types.ObjectId,
     ref: 'User',
     default: null
-  }
+  },
+  tags: [{
+    type: mongoose.Schema.Types.ObjectId,
+    ref: 'Tag'
+  }],
+
 }, { timestamps: true });
 
 export default reviewSchema;

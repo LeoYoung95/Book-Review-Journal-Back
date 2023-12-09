@@ -85,12 +85,23 @@ function UsersRoutes(app) {
         res.status(201).json(review);
     }));
 
-    // Admin Only: Remove Written Review [Hard Delete]
+    // Admin Only: Remove Written Review for the Author [Hard Delete]
     app.delete('/api/users/:id/written_reviews', wrapAsync(async (req, res) => {
         const response = await dao.removeWrittenReview(req.params.id, req.body.reviewId);
         res.status(200).json(response);
     }));
 
+    // Admin Only: Add to their deleted reviews [Soft Delete Tracker]
+    app.post('/api/users/:id/deleted_reviews', wrapAsync(async (req, res) => {
+        const review = await dao.addDeletedReview(req.params.id, req.body.reviewId);
+        res.status(201).json(review);
+    }));
+
+    // Admin Only: Remove from their deleted reviews [Soft Delete Tracker]
+    app.delete('/api/users/:id/deleted_reviews', wrapAsync(async (req, res) => {
+        const response = await dao.removeDeletedReview(req.params.id, req.body.reviewId);
+        res.status(200).json(response);
+    }));
 
     // Error handling middleware
     app.use((err, req, res, next) => {

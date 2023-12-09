@@ -106,6 +106,21 @@ const removeWrittenReview = async (userId, reviewId) => {
     return { message: 'Review removed successfully' };
 };
 
+const addDeletedReview = async (userId, reviewId) => {
+    // Add a deleted review to the admin's profile
+    const user = await UserModel.findById(userId);
+    user.deletedReviews.push(reviewId); // Adjust based on actual schema structure
+    await user.save();
+    return { message: 'Deleted review added successfully' };
+}
+
+const removeDeletedReview = async (userId, reviewId) => {
+    // Remove a deleted review from the admin's profile
+    const user = await UserModel.findById(userId);
+    user.deletedReviews = user.deletedReviews.filter(r => r.toString() !== reviewId);
+    await user.save();
+    return { message: 'Deleted review removed successfully' };
+}
 
 
 
@@ -120,4 +135,6 @@ export {
     removeLikedBook,
     addWrittenReview,
     removeWrittenReview,
+    addDeletedReview,
+    removeDeletedReview
 };
