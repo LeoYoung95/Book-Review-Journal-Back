@@ -38,6 +38,18 @@ function BooksRoutes(app) {
         const response = await dao.deleteBookByOpenLibraryId(req.params.olid, req.body.reviewID);
         res.json(response);
     });
+
+    // Route to add a user to a book's liked users by ID
+    app.post('/api/books/olid/:olid/liked_users', async (req, res) => {
+        const response = await dao.addBookLikedUsersById(req.params.olid, req.body.userId);
+        res.json(response);
+    });
+
+    // Route to delete a user from a book's liked users by ID
+    app.delete('/api/books/olid/:olid/liked_users', async (req, res) => {
+        const response = await dao.deleteBookLikedUsersById(req.params.olid, req.body.userId);
+        res.json(response);
+    });
 }
 
 export default BooksRoutes;

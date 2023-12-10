@@ -54,6 +54,37 @@ const deleteBookByOpenLibraryId = async (olid, reviewId) => {
     return book;
 }
 
+const addBookLikedUsersById = async (olid, userId) => {
+    // Add a user to a book's likedUsers list by its Open Library ID, if the book does not exist, it will be created
+    const book = await BookModel.findOne({olid: olid}); // Updated to match the schema field name
+    if (book) {
+        // check if user already liked the book
+        if (book.likedUsers.includes(userId)) {
+            return book;
+        }
+        book.likedUsers.push(userId);
+        await book.save();
+    } else {
+        const newBook = new BookModel({olid: olid, likedUsers: [userId]}); // Updated to match the schema field name
+        await newBook.save();
+    }
+    return book;
+
+}
+
+const deleteBookLikedUsersById = async (olid, userId) => {
+    // Delete a user from a book's likedUsers list by its Open Library ID [Hard Delete]
+    console.log("book dao olid:", olid);
+    console.log("book dao userId:", userId);
+    const book = await BookModel.findOne({olid: olid}); // Updated to match the schema field name
+    if (book) {
+        book.likedUsers = book.likedUsers.filter((user) => user.toString() !== userId);
+        await book.save();
+    }
+    return book;
+
+}
+
 
 export {
     findBookByMongoId,
@@ -62,6 +93,8 @@ export {
     addNewBookByOpenLibraryId,
     deleteBookByOpenLibraryId,
     findAllBooks,
+    addBookLikedUsersById,
+    deleteBookLikedUsersById
 };
 
 
