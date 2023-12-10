@@ -71,10 +71,15 @@ const removeLikedReview = async (userId, reviewId) => {
 const addLikedBook = async (userId, bookId) => {
     // Add a book to the user's liked books
     const user = await UserModel.findById(userId);
+
+    // check if book is already liked
+    if (user.likedBooks.includes(bookId)) {
+        throw new Error('Book already liked');
+    }
+
     user.likedBooks.push(bookId);
     await user.save();
     return { message: 'LikedBook Added Successfully' };
-
 }
 
 const removeLikedBook = async (userId, bookId) => {
