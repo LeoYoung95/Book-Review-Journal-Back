@@ -8,8 +8,8 @@ function BooksRoutes(app) {
     });
 
     // Route to get a book by its MongoDB ID
-    app.get('/api/books/:mongo_id', async (req, res) => {
-        const book = await dao.findBookByMongoId(req.params.mongo_id);
+    app.get('/api/books/:id', async (req, res) => {
+        const book = await dao.findBookByMongoId(req.params.id);
         res.json(book);
     });
     
