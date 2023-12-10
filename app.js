@@ -5,6 +5,7 @@ import session from "express-session";
 import UsersRoutes from "./users/routes.js";
 import ReviewsRoutes from "./reviews/routes.js";
 import BooksRoutes from "./books/routes.js";
+import TagsRoutes from "./tags/routes.js";
 import dotenv from 'dotenv';
 dotenv.config();
 
@@ -42,6 +43,7 @@ app.use(express.json());
 UsersRoutes(app);
 ReviewsRoutes(app);
 BooksRoutes(app);
+TagsRoutes(app);
 
 app.get('/', (req, res) => {
     res.send('BRJ Server is running on port 4000');

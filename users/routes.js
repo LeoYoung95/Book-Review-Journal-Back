@@ -41,7 +41,7 @@ function UsersRoutes(app) {
         const user = await dao.findUserById(req.session.user.id);
         res.status(200).json(user);
     }));
-
+    
     app.get('/api/users/:id', wrapAsync(async (req, res) => {
         const user = await dao.findUserById(req.params.id);
         res.status(200).json(user);
@@ -65,7 +65,7 @@ function UsersRoutes(app) {
         const response = await dao.removeLikedReview(req.params.id, req.body.reviewId);
         res.status(200).json(response);
     }));
-
+    
     // Reader Only: Add Liked Book
     app.post('/api/users/:id/liked_books', wrapAsync(async (req, res) => {
         const book = await dao.addLikedBook(req.params.id, req.body.bookId);
