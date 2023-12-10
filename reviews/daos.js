@@ -64,7 +64,7 @@ const recoverReview = async (reviewId) => {
     // Recover a soft-deleted review
     const recoveredReview = await ReviewModel.findByIdAndUpdate(reviewId, {
         is_deleted: false, deleted_by: null
-    }, {new: true});
+    });
     return recoveredReview;
 };
 
