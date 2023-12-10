@@ -45,6 +45,12 @@ function ReviewsRoutes(app) {
         res.json(response);
     });
 
+    // Author Only: Add Tags to Review
+    app.post('/api/reviews/:id/tags', async (req, res) => {
+        const response = await dao.addTagsToReview(req.params.id, req.body.tagIds);
+        res.json(response);
+    });
+
     // Author & Admin Only: Soft Delete Review
     app.put('/api/reviews/delete/:id', async (req, res) => {
         const response = await dao.deleteReview(req.params.id, req.body.deletedBy);

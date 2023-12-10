@@ -74,6 +74,17 @@ const hardDeleteReview = async (reviewId) => {
     return deletedReview;
 };
 
+const addTagsToReview = async (reviewId, tagIds) => {
+    // Add tags to a review
+    const review = await ReviewModel.findById(reviewId);
+    if (review) {
+        review.tags = [...new Set([...review.tags, ...tagIds])];
+        await review.save();
+    }
+    return review;
+}
+
+
 export {
     findReviewById,
     findReviewLikedUsersById,
@@ -85,4 +96,5 @@ export {
     recoverReview,
     findAllReviews,
     hardDeleteReview,
+    addTagsToReview
 };
