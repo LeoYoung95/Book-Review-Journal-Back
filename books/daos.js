@@ -74,8 +74,6 @@ const addBookLikedUsersById = async (olid, userId) => {
 
 const deleteBookLikedUsersById = async (olid, userId) => {
     // Delete a user from a book's likedUsers list by its Open Library ID [Hard Delete]
-    console.log("book dao olid:", olid);
-    console.log("book dao userId:", userId);
     const book = await BookModel.findOne({olid: olid}); // Updated to match the schema field name
     if (book) {
         book.likedUsers = book.likedUsers.filter((user) => user.toString() !== userId);

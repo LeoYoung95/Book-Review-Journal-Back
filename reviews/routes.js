@@ -41,7 +41,6 @@ function ReviewsRoutes(app) {
     // Author Only: Update Review
     app.put('/api/reviews/:id', async (req, res) => {
         const response = await dao.updateReview(req.params.id, req.body);
-        console.log(response);
         res.json(response);
     });
 

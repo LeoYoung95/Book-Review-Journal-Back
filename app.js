@@ -46,9 +46,9 @@ BooksRoutes(app);
 TagsRoutes(app);
 
 app.get('/', (req, res) => {
-    res.send('BRJ Server is running on port 4000');
+    res.send("BRJ Server is running!");
 });
 
 app.listen(process.env.PORT || 4000, () => {
-    console.log("BRJ Server is running on port 4000");
+    console.log("BRJ Server is running!");
 });
